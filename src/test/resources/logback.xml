@@ -1,0 +1,38 @@
+<configuration>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp>
+          <timeZone>UTC</timeZone>
+        </timestamp>
+        <provider class="com.premonition.logging.logback.MaskingMessageProvider">
+          <rules>
+            <rule>
+              <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
+              <suffix>\s+</suffix>
+            </rule>
+            <rule>
+              <pattern>\d{13,18}</pattern>
+              <unmasked>4</unmasked>
+            </rule>
+          </rules>
+        </provider>
+        <stackTrace/>
+        <pattern>
+          <pattern>
+            {
+            "severity": "%level",
+            "thread": "%thread",
+            "class": "%logger{40}"
+            }
+          </pattern>
+        </pattern>
+      </providers>
+    </encoder>
+  </appender>
+
+  <root level="debug">
+    <appender-ref ref="console"/>
+  </root>
+</configuration>
