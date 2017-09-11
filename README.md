@@ -11,10 +11,12 @@ Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/log
         <provider class="com.premonition.logging.logback.MaskingMessageProvider">
           <rules>
             <rule>
+              <name>credit card</name>
               <pattern>\d{13,18}</pattern>
               <unmasked>4</unmasked>
             </rule>
             <rule>
+              <name>SSN</name>
               <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
             </rule>
           </rules>
@@ -31,7 +33,6 @@ Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/log
         </pattern>
       </providers>
     </encoder>
-
 ```
 Also see
 

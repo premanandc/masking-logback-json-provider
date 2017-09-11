@@ -19,10 +19,10 @@ public class MaskRuleTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private final String invalidPattern;
+    private final String invalid;
 
-    public InvalidMasks(String invalidPattern) {
-      this.invalidPattern = invalidPattern;
+    public InvalidMasks(String invalid) {
+      this.invalid = invalid;
     }
 
     @Parameters
@@ -35,10 +35,17 @@ public class MaskRuleTest {
           {"\t   \t\n\n"},
       };
     }
+
     @Test
-    public void shouldNotMask() throws Exception {
+    public void shouldNotCreateWithAnInvalidPattern() throws Exception {
       thrown.expect(IllegalArgumentException.class);
-      new MaskRule.Definition(invalidPattern).rule();
+      new MaskRule.Definition("Test", invalid).rule();
+    }
+
+    @Test
+    public void shouldNotCreateWithAnInvalidName() throws Exception {
+      thrown.expect(IllegalArgumentException.class);
+      new MaskRule.Definition(invalid, "\\d{13,18}").rule();
     }
   }
 
@@ -82,7 +89,7 @@ public class MaskRuleTest {
 
     @Test
     public void shouldMask() throws Exception {
-      MaskRule rule = new MaskRule.Definition(prefix, suffix, pattern, unmasked).rule();
+      MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked).rule();
       assertThat(rule.apply(input)).isEqualTo(output);
     }
 
