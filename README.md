@@ -1,6 +1,8 @@
-<configuration>
+# Log Masking for JSON formatted events
 
-  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/logstash-logback-encoder) to mask sensitive contents of log events using rules like below:
+
+```$xml
     <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
       <providers>
         <timestamp>
@@ -29,9 +31,9 @@
         </pattern>
       </providers>
     </encoder>
-  </appender>
 
-  <root level="debug">
-    <appender-ref ref="console"/>
-  </root>
-</configuration>
+```
+Also see
+
+* [Logstash JSON Encoder](https://github.com/logstash/logstash-logback-encoder)
+* [Logback](https://logback.qos.ch)
