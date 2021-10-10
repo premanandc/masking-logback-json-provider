@@ -37,13 +37,13 @@ public class MaskRuleTest {
     }
 
     @Test
-    public void shouldNotCreateWithAnInvalidPattern() throws Exception {
+    public void shouldNotCreateWithAnInvalidPattern() {
       thrown.expect(IllegalArgumentException.class);
       new MaskRule.Definition("Test", invalid).rule();
     }
 
     @Test
-    public void shouldNotCreateWithAnInvalidName() throws Exception {
+    public void shouldNotCreateWithAnInvalidName() {
       thrown.expect(IllegalArgumentException.class);
       new MaskRule.Definition(invalid, "\\d{13,18}").rule();
     }
@@ -88,7 +88,7 @@ public class MaskRuleTest {
     }
 
     @Test
-    public void shouldMask() throws Exception {
+    public void shouldMask() {
       MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked).rule();
       assertThat(rule.apply(input)).isEqualTo(output);
     }

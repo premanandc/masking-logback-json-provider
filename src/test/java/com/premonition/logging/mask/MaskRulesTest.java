@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MaskRulesTest {
 
   @Test
-  public void shouldValidateAllRules() throws Exception {
+  public void shouldValidateAllRules() {
     MaskRules rules = new MaskRules();
     rules.addRule(new MaskRule.Definition("Credit Card", "\\d{13,18}"));
     rules.addRule(new MaskRule.Definition("SSN", "\\d{3}-?\\d{3}-?\\d{4}"));
