@@ -71,18 +71,18 @@ public class MaskRuleTest {
     public static Object[][] data() {
       return new Object[][]{
           // @formatter:off
-          {0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\nXXXXX\n</test>\n  <more>bye</more>\n</other>"},
-          {0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>XXXXX</test>\n  <more>bye</more>\n</other>"},
-          {0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nXXXXX</test>\n  <more>bye</more>\n</other>"},
-          {2, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nXXXlo</test>\n  <more>bye</more>\n</other>"},
+          {0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n*****\n</test>\n  <more>bye</more>\n</other>"},
+          {0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>*****</test>\n  <more>bye</more>\n</other>"},
+          {0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n*****</test>\n  <more>bye</more>\n</other>"},
+          {2, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo</test>\n  <more>bye</more>\n</other>"},
           {5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>"},
-          {5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nXXXlo123</test>\n  <more>bye</more>\n</other>"},
-          {0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nXXXXXXXX</test>\n  <more>bye</more>\n</other>"},
-          {0, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "XXXXXXXXXXXX"},
-          {4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "1231231234", "XXXXXX1234"},
-          {4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "XXXXXXXX1234"},
+          {5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo123</test>\n  <more>bye</more>\n</other>"},
+          {0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n********</test>\n  <more>bye</more>\n</other>"},
+          {0, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "************"},
+          {4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "1231231234", "******1234"},
+          {4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "********1234"},
           {12, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "123-123-1234"},
-          {4, "", "\\d{13,18}", "", "4111111111111111", "XXXXXXXXXXXX1111"},
+          {4, "", "\\d{13,18}", "", "4111111111111111", "************1111"},
           // @formatter:on
       };
     }

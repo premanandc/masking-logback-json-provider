@@ -19,7 +19,7 @@ public class MaskingMessageProviderTest {
   @Test
   public void shouldMask() throws Exception {
     logger.info("This is a test with credit card number {}", "4111111111111111");
-    assertThat(capture.toString()).contains("XXXXXXXXXXXX1111").doesNotContain("4111111111111111");
+    assertThat(capture.toString()).contains("************1111").doesNotContain("4111111111111111");
   }
 
   @Test

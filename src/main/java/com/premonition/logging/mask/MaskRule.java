@@ -15,6 +15,8 @@ import static java.util.regex.Pattern.compile;
  * Rule to masks sensitive information in logs.
  */
 public class MaskRule {
+  private static final String DEFAULT_MASK = "*";
+  
   private final String name;
   private final Pattern pattern;
   private final int unmasked;
@@ -72,7 +74,7 @@ public class MaskRule {
     Matcher matcher = pattern.matcher(input);
     if (matcher.find()) {
       String match = matcher.group(1);
-      String mask = repeat("X", Math.min(match.length(), match.length() - unmasked));
+      String mask = repeat(DEFAULT_MASK, Math.min(match.length(), match.length() - unmasked));
       String replacement = mask + match.substring(mask.length());
       return input.replace(match, replacement);
     }
