@@ -6,14 +6,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.boot.test.system.OutputCaptureRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MaskingMessageProviderTest {
 
   @Rule
-  public OutputCapture capture = new OutputCapture();
+  public OutputCaptureRule capture = new OutputCaptureRule();
 
   private static final Logger logger = LoggerFactory.getLogger(MaskingMessageProviderTest.class);
   @Test
