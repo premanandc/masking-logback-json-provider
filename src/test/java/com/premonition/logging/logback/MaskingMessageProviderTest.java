@@ -17,13 +17,13 @@ public class MaskingMessageProviderTest {
 
   private static final Logger logger = LoggerFactory.getLogger(MaskingMessageProviderTest.class);
   @Test
-  public void shouldMask() throws Exception {
+  public void shouldMask() {
     logger.info("This is a test with credit card number {}", "4111111111111111");
-    assertThat(capture.toString()).contains("XXXXXXXXXXXX1111").doesNotContain("4111111111111111");
+    assertThat(capture.toString()).contains("************1111").doesNotContain("4111111111111111");
   }
 
   @Test
-  public void shouldContainStackTrace() throws Exception {
+  public void shouldContainStackTrace() {
     logger.error("This is an error", new RuntimeException("Error!!"));
     DocumentContext out = JsonPath.parse(capture.toString());
     assertThat(out.read("$.message", String.class)).isEqualTo("This is an error");
