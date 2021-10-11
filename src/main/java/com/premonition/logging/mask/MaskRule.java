@@ -64,7 +64,7 @@ public class MaskRule {
   }
 
   private static boolean nullOrBlank(String input) {
-    return Objects.isNull(input) || StringUtils.isBlank(input.trim());
+    return Objects.isNull(input) || StringUtils.isBlank(input) || StringUtils.isEmpty(input.trim());
   }
 
   /**
