@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,7 +64,7 @@ public class MaskRule {
   }
 
   private static boolean nullOrBlank(String input) {
-    return input == null || StringUtils.EMPTY.equals(input.trim());
+    return Objects.isNull(input) || StringUtils.isBlank(input.trim());
   }
 
   /**
