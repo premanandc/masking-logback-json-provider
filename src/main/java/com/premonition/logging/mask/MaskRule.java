@@ -110,7 +110,7 @@ public class MaskRule {
     }
   }
 
-  enum Position {
+  public enum Position {
     BEGIN,
     END
   }
