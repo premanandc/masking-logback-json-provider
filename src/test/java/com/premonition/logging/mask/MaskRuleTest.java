@@ -89,7 +89,7 @@ public class MaskRuleTest {
 
     @Test
     public void shouldMask() {
-      MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked).rule();
+      MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, MaskRule.Position.BEGIN).rule();
       assertThat(rule.apply(input)).isEqualTo(output);
     }
 
