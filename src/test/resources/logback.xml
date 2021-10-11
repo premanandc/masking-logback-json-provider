@@ -12,6 +12,7 @@
               <name>credit card</name>
               <pattern>\d{13,18}</pattern>
               <unmasked>4</unmasked>
+              <position>END</position>
             </rule>
             <rule>
               <name>ssn</name>
