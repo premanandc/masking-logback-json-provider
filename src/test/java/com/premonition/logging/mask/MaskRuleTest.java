@@ -50,7 +50,7 @@ public class MaskRuleTest {
     }
   }
 
-  @ParameterizedTest
+  @ParameterizedTest(name = "[{index}] should mask \"{4}\" to \"{5}\"")
   @MethodSource("provideDataForTest")
   void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output, MaskRule.Position position) {
     MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, position).rule();
