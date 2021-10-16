@@ -1,23 +1,19 @@
 package com.premonition.logging.mask;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @RunWith(Enclosed.class)
 public class MaskRuleTest {
 
   @RunWith(Parameterized.class)
   public static class InvalidMasks {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     private final String invalid;
 
@@ -38,14 +34,14 @@ public class MaskRuleTest {
 
     @Test
     public void shouldNotCreateWithAnInvalidPattern() {
-      thrown.expect(IllegalArgumentException.class);
-      new MaskRule.Definition("Test", invalid).rule();
+      assertThatExceptionOfType(IllegalArgumentException.class)
+              .isThrownBy(() -> new MaskRule.Definition("Test", invalid).rule());
     }
 
     @Test
     public void shouldNotCreateWithAnInvalidName() {
-      thrown.expect(IllegalArgumentException.class);
-      new MaskRule.Definition(invalid, "\\d{13,18}").rule();
+      assertThatExceptionOfType(IllegalArgumentException.class)
+              .isThrownBy(() -> new MaskRule.Definition(invalid, "\\d{13,18}").rule());
     }
   }
 
