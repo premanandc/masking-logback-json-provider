@@ -3,7 +3,9 @@ package com.premonition.logging.mask;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,8 @@ import static java.util.regex.Pattern.compile;
  * Rule to masks sensitive information in logs.
  */
 public class MaskRule {
+  private static final String DEFAULT_MASK = "*";
+  
   private final String name;
   private final Pattern pattern;
   private final int unmasked;
@@ -41,14 +45,14 @@ public class MaskRule {
   }
 
   private static String repeat(String input, int times) {
-    if (times <= 0) return "";
+    if (times <= 0) return StringUtils.EMPTY;
     else if (times % 2 == 0) return repeat(input + input, times / 2);
     else return input + repeat(input + input, times / 2);
   }
 
   private static Pattern parse(String prefix, String suffix, String pattern) {
-    String parsedPrefix = nullOrBlank(prefix) ? "" : "(?<=" + prefix + ")(?:\\s*)";
-    String parsedSuffix = nullOrBlank(suffix) ? "" : "(?:\\s*)(?=" + suffix + ")";
+    String parsedPrefix = nullOrBlank(prefix) ? StringUtils.EMPTY : "(?<=" + prefix + ")(?:\\s*)";
+    String parsedSuffix = nullOrBlank(suffix) ? StringUtils.EMPTY : "(?:\\s*)(?=" + suffix + ")";
     return compile(parsedPrefix + validated(pattern) + parsedSuffix, DOTALL | MULTILINE);
   }
 
@@ -60,7 +64,7 @@ public class MaskRule {
   }
 
   private static boolean nullOrBlank(String input) {
-    return input == null || "".equals(input.trim());
+    return Objects.isNull(input) || StringUtils.isBlank(input) || StringUtils.isEmpty(input.trim());
   }
 
   /**
@@ -72,7 +76,7 @@ public class MaskRule {
     Matcher matcher = pattern.matcher(input);
     if (matcher.find()) {
       String match = matcher.group(1);
-      String mask = repeat("X", Math.min(match.length(), match.length() - unmasked));
+      String mask = repeat(DEFAULT_MASK, Math.min(match.length(), match.length() - unmasked));
       String replacement = mask + match.substring(mask.length());
       return input.replace(match, replacement);
     }
@@ -89,13 +93,13 @@ public class MaskRule {
   @NoArgsConstructor
   public static class Definition {
     private String name;
-    private String prefix = "";
-    private String suffix = "";
+    private String prefix = StringUtils.EMPTY;
+    private String suffix = StringUtils.EMPTY;
     private String pattern;
     private int unmasked = 0;
 
     public Definition(String name, String pattern) {
-      this(name, "", "", pattern, 0);
+      this(name, StringUtils.EMPTY, StringUtils.EMPTY, pattern, 0);
     }
 
     public MaskRule rule() {
