@@ -16,18 +16,18 @@ public class MaskRuleTest {
 
   public static Stream<Arguments> provideDataForTest() {
     return Stream.of(
-            Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n*****\n</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>*****</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n*****</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(2, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo123</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n********</test>\n  <more>bye</more>\n</other>"),
-            Arguments.of(0, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "************"),
-            Arguments.of(4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "1231231234", "******1234"),
-            Arguments.of(4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "********1234"),
-            Arguments.of(12, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "123-123-1234"),
-            Arguments.of(4, "", "\\d{13,18}", "", "4111111111111111", "************1111")
+            Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n*****\n</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>*****</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n*****</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(2, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\nhello</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(5, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n***lo123</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(0, "<test>", "\\S+", "</test>", "<other>\n  <test>\n\nhello123</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n\n********</test>\n  <more>bye</more>\n</other>", MaskRule.Position.END),
+            Arguments.of(0, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "************", MaskRule.Position.END),
+            Arguments.of(4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "1231231234", "******1234", MaskRule.Position.END),
+            Arguments.of(4, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "********1234", MaskRule.Position.END),
+            Arguments.of(12, "", "\\d{3}-?\\d{3}-?\\d{4}", "", "123-123-1234", "123-123-1234", MaskRule.Position.END),
+            Arguments.of(4, "", "\\d{13,18}", "", "4111111111111111", "************1111", MaskRule.Position.END)
     );
   }
 
@@ -52,8 +52,8 @@ public class MaskRuleTest {
 
   @ParameterizedTest
   @MethodSource("provideDataForTest")
-  void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output) {
-    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked).rule();
+  void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output, MaskRule.Position position) {
+    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, position).rule();
     assertThat(rule.apply(input)).isEqualTo(output);
   }
 }
