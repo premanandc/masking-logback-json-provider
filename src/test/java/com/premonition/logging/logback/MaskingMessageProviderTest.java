@@ -19,7 +19,7 @@ class MaskingMessageProviderTest {
   @Test
   void shouldMask(CapturedOutput output) {
     logger.info("This is a test with credit card number {}", "4111111111111111");
-    assertThat(output.toString()).contains("************1111").doesNotContain("4111111111111111");
+    assertThat(output.toString()).contains("4111************").doesNotContain("4111111111111111");
   }
 
   @Test
