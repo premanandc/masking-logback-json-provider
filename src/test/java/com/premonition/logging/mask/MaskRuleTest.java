@@ -10,9 +10,9 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class MaskRuleTest {
+class MaskRuleTest {
 
-  public static Stream<Arguments> provideDataForTest() {
+  static Stream<Arguments> provideDataForTest() {
     return Stream.of(
             Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n*****\n</test>\n  <more>bye</more>\n</other>"),
             Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>*****</test>\n  <more>bye</more>\n</other>"),
@@ -34,17 +34,19 @@ public class MaskRuleTest {
     @ParameterizedTest(name = "[{index}] should not create with invalid pattern: \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = { "   ", "\t   \t", "\t   \t\n\n"})
-    public void shouldNotCreateWithAnInvalidPattern(String invalid) {
+    void shouldNotCreateWithAnInvalidPattern(String invalid) {
+      MaskRule.Definition definition = new MaskRule.Definition("Test", invalid);
       assertThatExceptionOfType(IllegalArgumentException.class)
-              .isThrownBy(() -> new MaskRule.Definition("Test", invalid).rule());
+              .isThrownBy(definition::rule);
     }
 
     @ParameterizedTest(name = "[{index}] should not create with an invalid name: \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = { "   ", "\t   \t", "\t   \t\n\n"})
-    public void shouldNotCreateWithAnInvalidName(String invalid) {
+    void shouldNotCreateWithAnInvalidName(String invalid) {
+      MaskRule.Definition definition = new MaskRule.Definition(invalid, "\\d{13,18}");
       assertThatExceptionOfType(IllegalArgumentException.class)
-              .isThrownBy(() -> new MaskRule.Definition(invalid, "\\d{13,18}").rule());
+              .isThrownBy(definition::rule);
     }
   }
 

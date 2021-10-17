@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MaskRulesTest {
+class MaskRulesTest {
 
   @Test
-  public void shouldValidateAllRules() {
+  void shouldValidateAllRules() {
     MaskRules rules = new MaskRules();
     rules.addRule(new MaskRule.Definition("Credit Card", "\\d{13,18}"));
     rules.addRule(new MaskRule.Definition("SSN", "\\d{3}-?\\d{3}-?\\d{4}"));
