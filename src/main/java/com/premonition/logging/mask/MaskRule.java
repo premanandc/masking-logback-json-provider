@@ -25,12 +25,12 @@ public class MaskRule {
   private final Position position;
 
   /**
-   * @param name a friendly name for the rule.
-   * @param prefix a literal prefix preceding the actual search pattern.
-   * @param suffix a literal suffix preceding the actual search pattern.
-   * @param pattern a regular expression pattern to identify the personally identifiable information.
-   * @param unmasked the number of characters to leave unmasked.
-   * @param position the position of the mask
+   * @param name  a friendly name for the rule.
+   * @param prefix  a literal prefix preceding the actual search pattern.
+   * @param suffix  a literal suffix preceding the actual search pattern.
+   * @param pattern  a regular expression pattern to identify the personally identifiable information.
+   * @param unmasked  the number of characters to leave unmasked.
+   * @param position  the position of the mask
    */
   MaskRule(String name, String prefix, String suffix, String pattern, int unmasked, Position position) {
     this.name = parse(name);

@@ -8,6 +8,10 @@ import net.logstash.logback.composite.loggingevent.MessageJsonProvider;
 
 import java.io.IOException;
 
+/**
+ * Custom message json provider
+ * @see net.logstash.logback.composite.loggingevent.MessageJsonProvider
+ */
 public class MaskingMessageProvider extends MessageJsonProvider {
 
   private MaskRules rules;
