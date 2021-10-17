@@ -14,7 +14,7 @@ import static java.util.regex.Pattern.MULTILINE;
 import static java.util.regex.Pattern.compile;
 
 /**
- * Rule to masks sensitive information in logs.
+ * Rule to mask sensitive information in logs.
  */
 public class MaskRule {
   private static final String DEFAULT_MASK = "*";
