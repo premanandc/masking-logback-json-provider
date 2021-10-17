@@ -25,6 +25,7 @@ public class MaskRule {
   private final Position position;
 
   /**
+   * Class constructor
    * @param name  a friendly name for the rule.
    * @param prefix  a literal prefix preceding the actual search pattern.
    * @param suffix  a literal suffix preceding the actual search pattern.
@@ -62,7 +63,7 @@ public class MaskRule {
     if (nullOrBlank(pattern)) {
       throw new IllegalArgumentException("Need a non-blank pattern value!");
     }
-    return pattern.startsWith("(") ? pattern : "(" + pattern + ")";
+    return pattern.matches("\\(.*\\)") ? pattern : "(" + pattern + ")";
   }
 
   private static boolean nullOrBlank(String input) {
