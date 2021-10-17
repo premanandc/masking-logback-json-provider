@@ -79,9 +79,7 @@ public class MaskRule {
     if (matcher.find()) {
       String match = matcher.group(1);
       String mask = repeat(DEFAULT_MASK, Math.min(match.length(), match.length() - unmasked));
-      String replacement = position.equals(Position.BEGIN)
-              ? mask + match.substring(mask.length())
-              : match.substring(0, match.length() - mask.length()) + mask;
+      String replacement = position.getReplacement(match, mask);
       return input.replace(match, replacement);
     }
     return input;
@@ -113,7 +111,19 @@ public class MaskRule {
   }
 
   public enum Position {
-    BEGIN,
-    END
+    BEGIN {
+      @Override
+      String getReplacement(String match, String mask) {
+        return mask + match.substring(mask.length());
+      }
+    },
+    END {
+      @Override
+      String getReplacement(String match, String mask) {
+        return match.substring(0, match.length() - mask.length()) + mask;
+      }
+    };
+
+    abstract String getReplacement(String match, String mask);
   }
 }
