@@ -1,4 +1,5 @@
 # Log Masking for JSON formatted events
+[![Java CI](https://github.com/joabetc/masking-logback-json-provider/actions/workflows/main.yml/badge.svg)](https://github.com/joabetc/masking-logback-json-provider/actions/workflows/main.yml)
 
 Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/logstash-logback-encoder) to mask sensitive contents of log events using rules like below:
 
