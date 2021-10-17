@@ -14,7 +14,7 @@ import static java.util.regex.Pattern.MULTILINE;
 import static java.util.regex.Pattern.compile;
 
 /**
- * Rule to masks sensitive information in logs.
+ * Rule to mask sensitive information in logs.
  */
 public class MaskRule {
   private static final String DEFAULT_MASK = "*";
@@ -22,19 +22,22 @@ public class MaskRule {
   private final String name;
   private final Pattern pattern;
   private final int unmasked;
+  private final Position position;
 
   /**
-   *
-   * @param name a friendly name for the rule.
-   * @param prefix a literal prefix preceding the actual search pattern.
-   * @param suffix a literal suffix preceding the actual search pattern.
-   * @param pattern a regular expression pattern to identify the personally identifiable information.
-   * @param unmasked the number of characters to leave unmasked.
+   * Class constructor
+   * @param name  a friendly name for the rule.
+   * @param prefix  a literal prefix preceding the actual search pattern.
+   * @param suffix  a literal suffix following the actual search pattern.
+   * @param pattern  a regular expression pattern to identify the personally identifiable information.
+   * @param unmasked  the number of characters to leave unmasked.
+   * @param position  the position of the mask
    */
-  MaskRule(String name, String prefix, String suffix, String pattern, int unmasked) {
+  MaskRule(String name, String prefix, String suffix, String pattern, int unmasked, Position position) {
     this.name = parse(name);
     this.pattern = parse(prefix, suffix, pattern);
     this.unmasked = unmasked;
+    this.position = position;
   }
 
   private String parse(String name) {
@@ -60,11 +63,11 @@ public class MaskRule {
     if (nullOrBlank(pattern)) {
       throw new IllegalArgumentException("Need a non-blank pattern value!");
     }
-    return pattern.startsWith("(") ? pattern : "(" + pattern + ")";
+    return pattern.matches("\\(.*\\)") ? pattern : "(" + pattern + ")";
   }
 
   private static boolean nullOrBlank(String input) {
-    return Objects.isNull(input) || StringUtils.isBlank(input) || StringUtils.isEmpty(input.trim());
+    return Objects.isNull(input) || StringUtils.isBlank(input) || StringUtils.isEmpty(input);
   }
 
   /**
@@ -77,7 +80,7 @@ public class MaskRule {
     if (matcher.find()) {
       String match = matcher.group(1);
       String mask = repeat(DEFAULT_MASK, Math.min(match.length(), match.length() - unmasked));
-      String replacement = mask + match.substring(mask.length());
+      String replacement = position.getReplacement(match, mask);
       return input.replace(match, replacement);
     }
     return input;
@@ -97,13 +100,31 @@ public class MaskRule {
     private String suffix = StringUtils.EMPTY;
     private String pattern;
     private int unmasked = 0;
+    private Position position;
 
     public Definition(String name, String pattern) {
-      this(name, StringUtils.EMPTY, StringUtils.EMPTY, pattern, 0);
+      this(name, StringUtils.EMPTY, StringUtils.EMPTY, pattern, 0, Position.BEGIN);
     }
 
     public MaskRule rule() {
-      return new MaskRule(name, prefix, suffix, pattern, unmasked);
+      return new MaskRule(name, prefix, suffix, pattern, unmasked, position);
     }
+  }
+
+  public enum Position {
+    BEGIN {
+      @Override
+      String getReplacement(String match, String mask) {
+        return mask + match.substring(mask.length());
+      }
+    },
+    END {
+      @Override
+      String getReplacement(String match, String mask) {
+        return match.substring(0, match.length() - mask.length()) + mask;
+      }
+    };
+
+    abstract String getReplacement(String match, String mask);
   }
 }

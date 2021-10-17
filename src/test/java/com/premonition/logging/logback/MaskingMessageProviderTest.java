@@ -12,18 +12,18 @@ import org.springframework.boot.test.system.OutputCaptureExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(OutputCaptureExtension.class)
-public class MaskingMessageProviderTest {
+class MaskingMessageProviderTest {
 
   private static final Logger logger = LoggerFactory.getLogger(MaskingMessageProviderTest.class);
 
   @Test
-  public void shouldMask(CapturedOutput output) {
+  void shouldMask(CapturedOutput output) {
     logger.info("This is a test with credit card number {}", "4111111111111111");
-    assertThat(output.toString()).contains("************1111").doesNotContain("4111111111111111");
+    assertThat(output.toString()).contains("4111************").doesNotContain("4111111111111111");
   }
 
   @Test
-  public void shouldContainStackTrace(CapturedOutput output) {
+  void shouldContainStackTrace(CapturedOutput output) {
     logger.error("This is an error", new RuntimeException("Error!!"));
     DocumentContext out = JsonPath.parse(output.toString());
     assertThat(out.read("$.message", String.class)).isEqualTo("This is an error");

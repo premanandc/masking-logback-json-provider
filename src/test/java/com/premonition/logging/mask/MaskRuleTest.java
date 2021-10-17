@@ -1,20 +1,18 @@
 package com.premonition.logging.mask;
 
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-public class MaskRuleTest {
+class MaskRuleTest {
 
-  public static Stream<Arguments> provideDataForTest() {
+  static Stream<Arguments> provideDataForTest() {
     return Stream.of(
             Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>\nhello\n</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>\n*****\n</test>\n  <more>bye</more>\n</other>"),
             Arguments.of(0, "<test>", "(\\S+)", "</test>", "<other>\n  <test>hello</test>\n  <more>bye</more>\n</other>", "<other>\n  <test>*****</test>\n  <more>bye</more>\n</other>"),
@@ -36,24 +34,36 @@ public class MaskRuleTest {
     @ParameterizedTest(name = "[{index}] should not create with invalid pattern: \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = { "   ", "\t   \t", "\t   \t\n\n"})
-    public void shouldNotCreateWithAnInvalidPattern(String invalid) {
+    void shouldNotCreateWithAnInvalidPattern(String invalid) {
+      MaskRule.Definition definition = new MaskRule.Definition("Test", invalid);
       assertThatExceptionOfType(IllegalArgumentException.class)
-              .isThrownBy(() -> new MaskRule.Definition("Test", invalid).rule());
+              .isThrownBy(definition::rule);
     }
 
     @ParameterizedTest(name = "[{index}] should not create with an invalid name: \"{0}\"")
     @NullAndEmptySource
     @ValueSource(strings = { "   ", "\t   \t", "\t   \t\n\n"})
-    public void shouldNotCreateWithAnInvalidName(String invalid) {
+    void shouldNotCreateWithAnInvalidName(String invalid) {
+      MaskRule.Definition definition = new MaskRule.Definition(invalid, "\\d{13,18}");
       assertThatExceptionOfType(IllegalArgumentException.class)
-              .isThrownBy(() -> new MaskRule.Definition(invalid, "\\d{13,18}").rule());
+              .isThrownBy(definition::rule);
     }
   }
 
-  @ParameterizedTest
+  @ParameterizedTest(name = "[{index}] should mask \"{4}\" to \"{5}\"")
   @MethodSource("provideDataForTest")
   void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output) {
-    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked).rule();
+    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, MaskRule.Position.BEGIN).rule();
     assertThat(rule.apply(input)).isEqualTo(output);
+  }
+
+  @ParameterizedTest(name = "[{index}] should position mask to the {0}")
+  @CsvSource(value = {
+          "BEGIN,********1234",
+          "END,123-********"
+  })
+  void shouldPositionMaks(MaskRule.Position position, String output) {
+    MaskRule rule = new MaskRule.Definition("Test", StringUtils.EMPTY, StringUtils.EMPTY, "\\d{3}-?\\d{3}-?\\d{4}", 4, position).rule();
+    assertThat(rule.apply("123-123-1234")).isEqualTo(output);
   }
 }

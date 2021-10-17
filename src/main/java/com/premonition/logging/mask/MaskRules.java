@@ -4,6 +4,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.BinaryOperator;
 
+/**
+ * Class for grouping multiples {@link MaskRule}
+ */
 public class MaskRules {
   private static final BinaryOperator<String> NO_OP = (in, out) -> {
     throw new UnsupportedOperationException("Only needed for parallel streams!");
