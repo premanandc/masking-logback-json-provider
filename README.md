@@ -14,6 +14,7 @@ Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/log
               <name>credit card</name>
               <pattern>\d{13,18}</pattern>
               <unmasked>4</unmasked>
+              <position>END</position>
             </rule>
             <rule>
               <name>SSN</name>
