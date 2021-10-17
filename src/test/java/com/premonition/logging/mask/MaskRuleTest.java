@@ -1,11 +1,9 @@
 package com.premonition.logging.mask;
 
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.stream.Stream;
 
@@ -55,5 +53,15 @@ public class MaskRuleTest {
   void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output) {
     MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, MaskRule.Position.BEGIN).rule();
     assertThat(rule.apply(input)).isEqualTo(output);
+  }
+
+  @ParameterizedTest(name = "[{index}] should position mask to the {0}")
+  @CsvSource(value = {
+          "BEGIN,********1234",
+          "END,123-********"
+  })
+  void shouldPositionMaks(MaskRule.Position position, String output) {
+    MaskRule rule = new MaskRule.Definition("Test", StringUtils.EMPTY, StringUtils.EMPTY, "\\d{3}-?\\d{3}-?\\d{4}", 4, position).rule();
+    assertThat(rule.apply("123-123-1234")).isEqualTo(output);
   }
 }
