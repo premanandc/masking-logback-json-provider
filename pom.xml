@@ -32,7 +32,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.11</version>
+      <version>1.4.0</version>
     </dependency>
     <dependency>
       <groupId>net.logstash.logback</groupId>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.3</version>
+      <version>2.13.4</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -53,6 +53,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+      <version>5.9.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -70,7 +71,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>2.7.0</version>
+      <version>2.7.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
