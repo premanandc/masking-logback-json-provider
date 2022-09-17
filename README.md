@@ -48,6 +48,30 @@ Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/log
 | `unmasked` | the number of characters to leave unmasked                                       |
 | `position` | the position of the mask                                                         |
 
+## Samples
+
+### Position BEGIN (default)
+```xml
+<rule>
+  <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
+  <unmasked>4</unmasked><!-- 4 digits will remain unmasked -->
+  <position>BEGIN</position><!-- mask position -->
+</rule>
+```
+* input: `123-123-1234`
+* output: `********1234`
+
+### Position END
+```xml
+<rule>
+  <pattern>\d{3}-?\d{3}-?\d{4}</pattern>
+  <unmasked>4</unmasked><!-- 4 digits will remain unmasked -->
+  <position>END</position><!-- mask position -->
+</rule>
+```
+* input: `123-123-1234`
+* output: `123-********`
+
 ## Also see
 
 * [Logstash JSON Encoder](https://github.com/logstash/logstash-logback-encoder)
