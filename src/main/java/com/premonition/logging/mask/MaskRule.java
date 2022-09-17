@@ -12,13 +12,13 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.MULTILINE;
 import static java.util.regex.Pattern.compile;
-import static jdk.internal.joptsimple.internal.Strings.EMPTY;
 
 /**
  * Rule to mask sensitive information in logs.
  */
 public class MaskRule {
   private static final String DEFAULT_MASK = "*";
+  private static final String EMPTY = "";
 
   private final String name;
   private final Pattern pattern;
