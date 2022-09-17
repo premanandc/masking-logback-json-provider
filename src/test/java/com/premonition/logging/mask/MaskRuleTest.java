@@ -1,6 +1,5 @@
 package com.premonition.logging.mask;
 
-import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
@@ -11,6 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class MaskRuleTest {
+
+  private static final String EMPTY = "";
 
   static Stream<Arguments> provideDataForTest() {
     return Stream.of(
@@ -63,7 +64,7 @@ class MaskRuleTest {
           "END,123-********"
   })
   void shouldPositionMaks(MaskRule.Position position, String output) {
-    MaskRule rule = new MaskRule.Definition("Test", StringUtils.EMPTY, StringUtils.EMPTY, "\\d{3}-?\\d{3}-?\\d{4}", 4, position).rule();
+    MaskRule rule = new MaskRule.Definition("Test", EMPTY, EMPTY, "\\d{3}-?\\d{3}-?\\d{4}", 4, position).rule();
     assertThat(rule.apply("123-123-1234")).isEqualTo(output);
   }
 }

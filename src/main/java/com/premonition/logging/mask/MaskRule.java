@@ -3,7 +3,7 @@ package com.premonition.logging.mask;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
+import net.logstash.logback.util.StringUtils;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -18,7 +18,8 @@ import static java.util.regex.Pattern.compile;
  */
 public class MaskRule {
   private static final String DEFAULT_MASK = "*";
-  
+  private static final String EMPTY = "";
+
   private final String name;
   private final Pattern pattern;
   private final int unmasked;
@@ -48,14 +49,14 @@ public class MaskRule {
   }
 
   private static String repeat(String input, int times) {
-    if (times <= 0) return StringUtils.EMPTY;
+    if (times <= 0) return EMPTY;
     else if (times % 2 == 0) return repeat(input + input, times / 2);
     else return input + repeat(input + input, times / 2);
   }
 
   private static Pattern parse(String prefix, String suffix, String pattern) {
-    String parsedPrefix = nullOrBlank(prefix) ? StringUtils.EMPTY : "(?<=" + prefix + ")(?:\\s*)";
-    String parsedSuffix = nullOrBlank(suffix) ? StringUtils.EMPTY : "(?:\\s*)(?=" + suffix + ")";
+    String parsedPrefix = nullOrBlank(prefix) ? EMPTY : "(?<=" + prefix + ")(?:\\s*)";
+    String parsedSuffix = nullOrBlank(suffix) ? EMPTY : "(?:\\s*)(?=" + suffix + ")";
     return compile(parsedPrefix + validated(pattern) + parsedSuffix, DOTALL | MULTILINE);
   }
 
@@ -96,14 +97,14 @@ public class MaskRule {
   @NoArgsConstructor
   public static class Definition {
     private String name;
-    private String prefix = StringUtils.EMPTY;
-    private String suffix = StringUtils.EMPTY;
+    private String prefix = EMPTY;
+    private String suffix = EMPTY;
     private String pattern;
     private int unmasked = 0;
     private Position position;
 
     public Definition(String name, String pattern) {
-      this(name, StringUtils.EMPTY, StringUtils.EMPTY, pattern, 0, Position.BEGIN);
+      this(name, EMPTY, EMPTY, pattern, 0, Position.BEGIN);
     }
 
     public MaskRule rule() {
