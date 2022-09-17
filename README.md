@@ -39,14 +39,14 @@ Provides an extension to [Logstash JSON Encoder](https://github.com/logstash/log
 
 ## Rule tags
 
-| tag | description |
-| --- | --- |
-|`name`| an optional friendly name for the rule |
-| `prefix` | an optional literal prefix preceding the actual search pattern |
-| `suffix` | an optional literal suffix following the actual search pattern |
-| `pattern` | a regular expression pattern to identify the personally identifiable information |
-| `unmasked` | the number of characters to leave unmasked |
-| `position` | the position of the mask |
+| tag        | description                                                                      |
+|------------|----------------------------------------------------------------------------------|
+| `name`     | an optional friendly name for the rule                                           |
+| `prefix`   | an optional literal prefix preceding the actual search pattern                   |
+| `suffix`   | an optional literal suffix following the actual search pattern                   |
+| `pattern`  | a regular expression pattern to identify the personally identifiable information |
+| `unmasked` | the number of characters to leave unmasked                                       |
+| `position` | the position of the mask                                                         |
 
 ## Also see
 
