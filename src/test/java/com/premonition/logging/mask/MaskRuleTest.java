@@ -54,7 +54,7 @@ class MaskRuleTest {
   @ParameterizedTest(name = "[{index}] should mask \"{4}\" to \"{5}\"")
   @MethodSource("provideDataForTest")
   void shouldMask(int unmasked, String prefix, String pattern, String suffix, String input, String output) {
-    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, MaskRule.Position.BEGIN).rule();
+    MaskRule rule = new MaskRule.Definition("Test", prefix, suffix, pattern, unmasked, Position.BEGIN).rule();
     assertThat(rule.apply(input)).isEqualTo(output);
   }
 
@@ -63,7 +63,7 @@ class MaskRuleTest {
           "BEGIN,********1234",
           "END,123-********"
   })
-  void shouldPositionMaks(MaskRule.Position position, String output) {
+  void shouldPositionMaks(Position position, String output) {
     MaskRule rule = new MaskRule.Definition("Test", EMPTY, EMPTY, "\\d{3}-?\\d{3}-?\\d{4}", 4, position).rule();
     assertThat(rule.apply("123-123-1234")).isEqualTo(output);
   }
